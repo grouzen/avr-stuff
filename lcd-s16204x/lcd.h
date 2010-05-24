@@ -1,19 +1,42 @@
 #ifndef __LCD_H__
 #define __LCD_H__
 
+/* Commands. */
+#define C_INTERFACE_8B2L 0x38
+#define C_INTERFACE_8B1L 0x30
+#define C_INTERFACE_4B2L 0x28
+#define C_INTERFACE_4B1L 0x20
+#define C_SCROLL_R       0x1e
+#define C_SCROLL_L       0x18
+#define C_MOVE_HOME      0x2
+#define C_MOVE_R         0x14
+#define C_MOVE_L         0x10
+#define C_CURSOR_UNDER   0x0e
+#define C_CURSOR_BLOCK   0x0f
+#define C_CURSOR_INVIS   0x0c
+#define C_DISPLAY_BLANK  0x08
+#define C_DISPLAY_REST   0x0c
+#define C_SCREEN_CLEAR   0x01
+#define C_SET_DDRAM_POS(addr) (80 + (addr))
+#define C_SET_CGRAM_POS(addr) (40 + (addr))
+#define C_ENTRYMODE_I0D1S0 0x04
+#define C_ENTRYMODE_I0D1S1 0x05
+#define C_ENTRYMODE_I1D0S0 0x06
+#define C_ENTRYMODE_I1D0S1 0x07
+
 /* Must be changed for each board. */
 #ifdef XSCIENCE_ATM8
-#define DB0 NULL /* 7 */
-#define DB1 NULL /* 8 */
-#define DB2 NULL /* 9 */
-#define DB3 NULL /* 10 */
+#define DB0 -1   /* 7 */
+#define DB1 -1   /* 8 */
+#define DB2 -1   /* 9 */
+#define DB3 -1   /* 10 */
 #define DB4 PC0  /* 11 */
 #define DB5 PC1  /* 12 */
 #define DB6 PC2  /* 13 */
 #define DB7 PC3  /* 14 */
 
 #define RS  PD2  /* 4 */
-#define RW  NULL /* 5 */
+#define RW  -1   /* 5 */
 #define E   PB0  /* 6 */
 
 #define SET_IO(v)                               \
