@@ -64,6 +64,41 @@ void lcd_put_char(char c, uint8_t addr)
     return;
 }
 
+/* Receives null-terminating string
+   and puts it to the screen.
+*/
+void lcd_put_string(char *s, uint8_t addr)
+{
+    uint8_t i;
+    
+    for(i = 0; s[i] != '\0'; i++) {
+        lcd_put_char(s[i], addr + i);
+    }
+
+    return;
+}
+
+/* Like the lcd_put_string but with delaying in ms. */
+void lcd_put_string_delay(char *s, uint8_t addr, double delay)
+{
+    uint8_t i;
+    for(i = 0; s[i] != '\0'; i++) {
+        _delay_ms(delay);
+        lcd_put_char(s[i], addr + i);
+    }
+
+    return;
+}
+
+void lcd_clear_screen(void)
+{
+    SET_RS(0);
+    _delay_ms(5);
+    lcd_write_byte(C_SCREEN_CLEAR);
+
+    return;
+}
+
 void lcd_init(void)
 {
     /* Set lines of the E and RS to output state and 0 level. */
@@ -96,32 +131,11 @@ void lcd_init(void)
 int main(void)
 {    
     lcd_init();
-    /*
-    char loosers[] = ['l', 'o', 'o', 's', 'e', 'r', 's', '@'];
-    int i;
-    
-    SET_RS(1);
 
-    for(i = 0; i < sizeof(loosers) / sizeof(char); i++) {
-        _delay_ms(5);
-        lcd_write_byte(loosers[i]);
-    }
-    */
-
-    char anim[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-                   'a', 'b', 'c', 'd', 'e' ,'f'};
-    uint8_t i = 0;
     while(1) {
-        if(i > 15) {
-            for(i = 0; i < 16; i++) {
-                lcd_put_char(' ', i);
-            }
-            i = 0;
-        }
-        i = i % 16;
-        _delay_ms(500);
-        lcd_put_char(anim[i], i);
-        i++;
+        lcd_put_string_delay("GNU is not Unix", 0, 200);
+        _delay_ms(200);
+        lcd_clear_screen();
     }
     
     return 0;

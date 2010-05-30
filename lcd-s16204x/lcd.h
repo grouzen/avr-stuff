@@ -89,5 +89,8 @@ char lcd_read_byte(void);
 void lcd_write_byte(char);
 void lcd_put_char(char, uint8_t);
 void lcd_init(void);
+void lcd_put_string(char*, uint8_t);
+void lcd_put_string_delay(char*, uint8_t, double);
+void lcd_clear_screen(void);
 
 #endif /* __LCD_H__ */
