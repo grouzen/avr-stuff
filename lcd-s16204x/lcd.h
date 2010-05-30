@@ -17,8 +17,8 @@
 #define C_DISPLAY_BLANK  0x08
 #define C_DISPLAY_REST   0x0c
 #define C_SCREEN_CLEAR   0x01
-#define C_SET_DDRAM_POS(addr) (80 + (addr))
-#define C_SET_CGRAM_POS(addr) (40 + (addr))
+#define C_SET_DDRAM_POS(addr) (0x80 + (addr))
+#define C_SET_CGRAM_POS(addr) (0x40 + (addr))
 #define C_ENTRYMODE_I0D1S0 0x04
 #define C_ENTRYMODE_I0D1S1 0x05
 #define C_ENTRYMODE_I1D0S0 0x06
@@ -59,6 +59,7 @@
 
 #define SET_E(v) (PORTB = ((v) << E))
 #define SET_RS(v) (PORTD = ((v) << RS))
+#define SET_RW(v)
 
 #define WRITE_DB(byte)                                                  \
     do {                                                                \
@@ -70,5 +71,23 @@
         SET_E(0);                                                       \
     } while(0)
 
+#define READ_DB(byte)                           \
+    do {                                        \
+        SET_RW(1);                              \
+        SET_E(1);                               \
+        (byte) = PORTC;                         \
+        SET_E(0);                               \
+        SET_E(1);                               \
+        (byte) |= (PORTC >> 4);                 \
+        SET_E(0);                               \
+        SET_RW(0);                              \
+    } while(0)
+
 #endif /* XSCIENCE_ATM8 */
+
+char lcd_read_byte(void);
+void lcd_write_byte(char);
+void lcd_put_char(char, uint8_t);
+void lcd_init(void);
+
 #endif /* __LCD_H__ */
